@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://bnup5msetlg42"]
+
+[ext_resource type="PackedScene" uid="uid://dy26xc485fhld" path="res://addons/srcoder_fps_controller/player.tscn" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://xvirvni0l0oy" path="res://addons/srcoder_fps_controller/mouse_lock.tscn" id="2_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://dqmqi130rkshq" path="res://Bark_NormalTree.png" id="3_7mycd"]
+[ext_resource type="Texture2D" uid="uid://b7tn7sa8y8bis" path="res://materials/Grid_albedo.png" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://e2f3g4h5i6j7k" path="res://scenes/enemy.tscn" id="5_5vw27"]
+[ext_resource type="PackedScene" uid="uid://ciyjau3j1tvv0" path="res://scenes/game_ui.tscn" id="6_kek77"]
+[ext_resource type="PackedScene" uid="uid://l1m2n3o4p5q6r" path="res://scenes/twig.tscn" id="7_4c57u"]
+[ext_resource type="PackedScene" uid="uid://d1k3m2n5p6q7r" path="res://scenes/tank.tscn" id="8_efxa6"]
+[ext_resource type="PackedScene" uid="uid://cihksr4j7m8v1" path="res://scenes/safe_zone.tscn" id="9_safe"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7mycd"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_272bh"]
+sky_material = SubResource("ProceduralSkyMaterial_7mycd")
+
+[sub_resource type="Environment" id="Environment_5vw27"]
+background_mode = 2
+sky = SubResource("Sky_272bh")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kek77"]
+albedo_texture = ExtResource("3_7mycd")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
+albedo_texture = ExtResource("3_lquwl")
+uv1_scale = Vector3(5.845, 5.845, 5.845)
+
+[sub_resource type="BoxMesh" id="BoxMesh_efxa6"]
+material = SubResource("StandardMaterial3D_4c57u")
+size = Vector3(129.64, 0.155, 140.65)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dg77c"]
+points = PackedVector3Array(-11.1575, -0.075, -11.03, -11.1575, 0.075, -11.03, 11.1575, -0.075, -11.03, -11.1575, -0.075, 11.03, -11.1575, 0.075, 11.03, 11.1575, 0.075, -11.03, 11.1575, -0.075, 11.03, 11.1575, 0.075, 11.03)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5vw27")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103352, 1.31603, 1.67229)
+
+[node name="MouseLock" parent="Player" instance=ExtResource("2_1bvp3")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_kek77")
+mesh = SubResource("BoxMesh_efxa6")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_dg77c")
+
+[node name="Enemy" parent="." instance=ExtResource("5_5vw27")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.91694, 1.60044, -29.4484)
+
+[node name="GameUI" parent="." instance=ExtResource("6_kek77")]
+
+[node name="Twig" parent="." instance=ExtResource("7_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.305813, 0.141366, -2.55671)
+
+[node name="Tank" parent="." instance=ExtResource("8_efxa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.5483, 2.16294, -28.8033)
+
+[node name="SafeZone" parent="." instance=ExtResource("9_safe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0, 0.075, 25.0)
